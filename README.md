@@ -1,6 +1,4 @@
-# coding-project-template
-
-## Project done by Jesús Antonio Acosta Cabrera
+# Project done by Jesús Antonio Acosta Cabrera
 
 ## About
 
