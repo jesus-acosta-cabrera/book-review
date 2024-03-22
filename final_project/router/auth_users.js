@@ -101,8 +101,14 @@ regd_users.delete('/auth/review/:isbn', (req, res) => {
   for (bookISBN in books) {
     // book exists on our database
     if (bookISBN === ISBN) {
-      books[ISBN].reviews = Object.values(books[ISBN].reviews).filter((review) => review.author !== user);
-      res.status(200).json({'message':'review deleted successfully'})
+      let hasReview = Object.values(books[ISBN].reviews).filter(review => review.author === user);
+      if(hasReview.length > 0){
+        books[ISBN].reviews = Object.values(books[ISBN].reviews).filter((review) => review.author !== user);
+        res.status(200).json({'message':'review deleted successfully'})
+      }
+      else{
+        res.status(200).json({'message':`You haven't given a review for this book.`})
+      }
     }
   }
 })

@@ -37,43 +37,47 @@ public_users.get('/', function (req, res) {
 })
 
 const getAllBooks = () => {
-  const req = axios.get('http://localhost:5000/');
-  req.then(resp => {
-    console.log(resp.data);
-  })
-  .catch(err => {
-    console.log('an error occurred');
-  })
+  const req = axios.get('http://localhost:5000/')
+  req
+    .then(resp => {
+      console.log(resp.data)
+    })
+    .catch(err => {
+      console.log('an error occurred')
+    })
 }
 
 const getBooksbyISBN = () => {
-  const req = axios.get('http://localhost:5000/isbn/1');
-  req.then(resp => {
-    console.log(resp.data);
-  })
-  .catch(err => {
-    console.log('an error occurred');
-  })
+  const req = axios.get('http://localhost:5000/isbn/1')
+  req
+    .then(resp => {
+      console.log(resp.data)
+    })
+    .catch(err => {
+      console.log('an error occurred')
+    })
 }
 
 const getBooksbyAuthor = () => {
-  const req = axios.get('http://localhost:5000/author/Chinua Achebe');
-  req.then(resp => {
-    console.log(resp.data);
-  })
-  .catch(err => {
-    console.log('an error occurred');
-  })
+  const req = axios.get('http://localhost:5000/author/Chinua Achebe')
+  req
+    .then(resp => {
+      console.log(resp.data)
+    })
+    .catch(err => {
+      console.log('an error occurred')
+    })
 }
 
 const getBooksbyZTitle = () => {
-  const req = axios.get('http://localhost:5000/title/Things Fall Apart');
-  req.then(resp => {
-    console.log(resp.data);
-  })
-  .catch(err => {
-    console.log('an error occurred');
-  })
+  const req = axios.get('http://localhost:5000/title/Things Fall Apart')
+  req
+    .then(resp => {
+      console.log(resp.data)
+    })
+    .catch(err => {
+      console.log('an error occurred')
+    })
 }
 
 // Get book details based on ISBN
@@ -104,14 +108,19 @@ public_users.get('/isbn/:isbn', function (req, res) {
 public_users.get('/author/:author', function (req, res) {
   // Obtaining author from parameter
   const author = req.params.author
-  let authorBooks = []
-  for (i in books) {
-    if (books[i].author === author) authorBooks.push(books[i])
+  let bookList = []
+  for (ISBN in books) {
+    if (books[ISBN].author === author) {
+      bookList.push({
+        author: books[ISBN].author,
+        title: books[ISBN].title
+      })
+    }
   }
   // Author exists
-  if (authorBooks.length > 0) {
+  if (bookList.length > 0) {
     // Give client the books written by the author
-    return res.status(200).json(authorBooks)
+    return res.status(200).json(bookList)
   } else {
     // The author doesn't exist
     // Notify the client author doesn't exist
@@ -127,7 +136,11 @@ public_users.get('/title/:title', function (req, res) {
   const title = req.params.title
   let bookList = []
   for (i in books) {
-    if (books[i].title === title) bookList.push(books[i])
+    if (books[i].title === title)
+      bookList.push({
+        author: books[ISBN].author,
+        title: books[ISBN].title
+      })
   }
   if (bookList.length > 0) {
     return res.status(200).json(bookList)
