@@ -36,7 +36,7 @@ public_users.get('/', function (req, res) {
   return res.status(200).json(bookList)
 })
 
-const getAllBooks = () => {
+const getAllBooks = async () => {
   const req = axios.get('http://localhost:5000/')
   req
     .then(resp => {
@@ -47,7 +47,7 @@ const getAllBooks = () => {
     })
 }
 
-const getBooksbyISBN = () => {
+const getBooksbyISBN = async () => {
   const req = axios.get('http://localhost:5000/isbn/1')
   req
     .then(resp => {
@@ -58,8 +58,8 @@ const getBooksbyISBN = () => {
     })
 }
 
-const getBooksbyAuthor = () => {
-  const req = axios.get('http://localhost:5000/author/Chinua Achebe')
+const getBooksbyAuthor = async () => {
+  const req = axios.get('http://localhost:5000/author/Unknown')
   req
     .then(resp => {
       console.log(resp.data)
@@ -69,8 +69,8 @@ const getBooksbyAuthor = () => {
     })
 }
 
-const getBooksbyZTitle = () => {
-  const req = axios.get('http://localhost:5000/title/Things Fall Apart')
+const getBooksbyTitle = async () => {
+  const req = axios.get('http://localhost:5000/title/The Divine Comedy')
   req
     .then(resp => {
       console.log(resp.data)
@@ -79,6 +79,12 @@ const getBooksbyZTitle = () => {
       console.log('an error occurred')
     })
 }
+
+// Using Axios
+// let allBooks = await getAllBooks()
+// let booksISBN = await getBooksbyISBN()
+// let booksAuthor = await getBooksbyAuthor()
+// let booksTitle = await getBooksbyTitle()
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
@@ -135,8 +141,8 @@ public_users.get('/title/:title', function (req, res) {
   // Obtaining book title from parameter
   const title = req.params.title
   let bookList = []
-  for (i in books) {
-    if (books[i].title === title)
+  for (ISBN in books) {
+    if (books[ISBN].title === title)
       bookList.push({
         author: books[ISBN].author,
         title: books[ISBN].title
