@@ -3,6 +3,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').regd_users
+const admin_routes = require('./router/admin_user.js').admin_users
 const genl_routes = require('./router/general.js').general
 
 // Initializing express
@@ -12,10 +13,10 @@ const PORT = 5000
 
 // Auth
 app.use('/customer', session({secret: 'fingerprint', resave: true,saveUninitialized: true}))
+app.use('/book',session({secret:'fingerprint', resave:true, saveUninitialized:true}))
 app.use(express.json())
 
-
-// This is the middleware
+// This is the middleware for normal users
 app.use('/customer/auth/*', function auth (req, res, next) { 
   // Write the authenication mechanism here
   if (req.session.authorization) {
@@ -37,7 +38,32 @@ app.use('/customer/auth/*', function auth (req, res, next) {
   }
 })
 
+// This is the middleware for admins
+app.use('/book/auth/*', function auth (req, res, next) { 
+  // Write the authenication mechanism here
+  if (req.session.authorization) {
+    token = req.session.authorization['accessToken']
+    jwt.verify(token, 'admin', (err, user) => {
+      if (!err) {
+        req.user = user
+        next()
+      } else {
+        return res.status(403).json({
+          message: 'User not authenticated'
+        })
+      }
+    })
+  } else {
+    return res.status(403).json({
+      message: 'User not logged in'
+    })
+  }
+})
+
+
+
 app.use('/customer', customer_routes)
+app.use('/book',admin_routes)
 app.use('/', genl_routes)
 
 app.listen(PORT, () => console.log('Server is running'))

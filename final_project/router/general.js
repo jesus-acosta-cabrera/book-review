@@ -7,12 +7,17 @@ const public_users = express.Router()
 //Write your code here
 public_users.post('/register', (req, res) => {
   // Obtain username & password from request body
-  const { username, password } = req.body
+  const { username, password, type } = req.body
 
   // Checking if username isn't stored on database
   if (isValid(username)) {
     // Adding username to database
-    users.push({ username, password })
+    if(!type){
+      users.push({ username, password, type:"null"})      
+    }
+    else{
+      users.push({ username, password, type })
+    }
     // Response for client (User created)
     return res.status(200).json({
       message: '¡User registered successfully!'
@@ -36,49 +41,49 @@ public_users.get('/', function (req, res) {
   return res.status(200).json(bookList)
 })
 
-const getAllBooks = async () => {
-  const req = axios.get('http://localhost:5000/')
-  req
-    .then(resp => {
-      console.log(resp.data)
-    })
-    .catch(err => {
-      console.log('an error occurred')
-    })
-}
+// const getAllBooks = async () => {
+//   const req = axios.get('http://localhost:5000/')
+//   req
+//     .then(resp => {
+//       console.log(resp.data)
+//     })
+//     .catch(err => {
+//       console.log('an error occurred')
+//     })
+// }
 
-const getBooksbyISBN = async () => {
-  const req = axios.get('http://localhost:5000/isbn/1')
-  req
-    .then(resp => {
-      console.log(resp.data)
-    })
-    .catch(err => {
-      console.log('an error occurred')
-    })
-}
+// const getBooksbyISBN = async () => {
+//   const req = axios.get('http://localhost:5000/isbn/1')
+//   req
+//     .then(resp => {
+//       console.log(resp.data)
+//     })
+//     .catch(err => {
+//       console.log('an error occurred')
+//     })
+// }
 
-const getBooksbyAuthor = async () => {
-  const req = axios.get('http://localhost:5000/author/Unknown')
-  req
-    .then(resp => {
-      console.log(resp.data)
-    })
-    .catch(err => {
-      console.log('an error occurred')
-    })
-}
+// const getBooksbyAuthor = async () => {
+//   const req = axios.get('http://localhost:5000/author/Unknown')
+//   req
+//     .then(resp => {
+//       console.log(resp.data)
+//     })
+//     .catch(err => {
+//       console.log('an error occurred')
+//     })
+// }
 
-const getBooksbyTitle = async () => {
-  const req = axios.get('http://localhost:5000/title/The Divine Comedy')
-  req
-    .then(resp => {
-      console.log(resp.data)
-    })
-    .catch(err => {
-      console.log('an error occurred')
-    })
-}
+// const getBooksbyTitle = async () => {
+//   const req = axios.get('http://localhost:5000/title/The Divine Comedy')
+//   req
+//     .then(resp => {
+//       console.log(resp.data)
+//     })
+//     .catch(err => {
+//       console.log('an error occurred')
+//     })
+// }
 
 // Using Axios
 // let allBooks = await getAllBooks()
